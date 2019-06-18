@@ -22,3 +22,22 @@ Finally, we obtain 509,818 valid data samples.
 1. We lowercase, tokenize (use [stanfordcorenlp](https://github.com/Lynten/stanford-corenlp)), and replace the digit with "\<digit\>" token for all the text. You can download the processed data [here](https://www.dropbox.com/s/lgeza7owhn9dwtu/Processed_data_for_onmt.zip?dl=1).
 # Run our model
 The source code will be available soon.
+# Citation
+You can cite our paper by:
+```
+@inproceedings{chen-etal-2019-integrated,
+    title = "An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction",
+    author = "Chen, Wang  and
+      Chan, Hou Pong  and
+      Li, Piji  and
+      Bing, Lidong  and
+      King, Irwin",
+    booktitle = "Proceedings of the 2019 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long and Short Papers)",
+    month = jun,
+    year = "2019",
+    address = "Minneapolis, Minnesota",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/N19-1292",
+    pages = "2846--2856",
+}
+```
