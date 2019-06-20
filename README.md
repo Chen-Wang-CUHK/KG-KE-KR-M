@@ -9,7 +9,7 @@ Total | 530,802
 Valid | 509,818
 Empty | 20,984
 
-The original training dataset from [Rui Meng](https://github.com/memray/seq2seq-keyphrase) contains `530809` data samples. We do the following filtering procedures:
+The original training dataset from [Rui Meng](https://github.com/memray/seq2seq-keyphrase) contains `530,809` data samples. We do the following filtering procedures:
 
 1. We filter out the data samples with empty title or empty abstract. `7` samples are filtered and `530,802` samples are remained.
 2. From the `530,802` samples, we filter out `20,984` samples and remain `509,818` samples:
