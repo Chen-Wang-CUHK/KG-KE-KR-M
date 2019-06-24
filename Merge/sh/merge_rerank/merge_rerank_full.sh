@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=merge_rerank_full
-#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/Merge/logs/seed3435_full_kg_ke_kr_m_debug_merge_rerank_log.txt
+#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/Merge/logs/seed3435_full_kg_ke_kr_merge_rerank_log.txt
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu_24h
 #SBATCH -w gpu26
@@ -15,7 +15,7 @@ GPUID=0
 cd ..
 cd ..
 
-MODEL="seed3435_full_kg_ke_kr_m_debug"
+MODEL="seed3435_full_kg_ke_kr"
 
 MG_KEY="merge_all"
 
