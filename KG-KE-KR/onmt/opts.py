@@ -85,15 +85,11 @@ def model_opts(parser):
                        the system to incorporate non-text inputs.
                        Options are [text|img|audio].""")
     group.add_argument('-encoder_type', type=str, default='rnn',
-                       choices=['rnn', 'brnn', 'mean', 'transformer', 'cnn'],
-                       help="""Type of encoder layer to use. Non-RNN layers
-                       are experimental. Options are
-                       [rnn|brnn|mean|transformer|cnn].""")
+                       choices=['rnn', 'brnn'],
+                       help="""Options are [rnn|brnn].""")
     group.add_argument('-decoder_type', type=str, default='rnn',
-                       choices=['rnn', 'transformer', 'cnn'],
-                       help="""Type of decoder layer to use. Non-RNN layers
-                       are experimental. Options are
-                       [rnn|transformer|cnn].""")
+                       choices=['rnn'],
+                       help="""Options are [rnn].""")
 
     group.add_argument('-layers', type=int, default=-1,
                        help='Number of layers in enc/dec.')
