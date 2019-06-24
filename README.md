@@ -103,7 +103,7 @@ Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_
 cd KG-KE-KR/sh/translate/
 sh translate_full.sh
 ```
-Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `translate_full.sh` is to run `KG-KE-KR/translate.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `translate_full.sh` is to run `KG-KE-KR/translate.py`, Part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
 ```
 -model []: a '.pt' file storing the finally chosen model
 -output []: an output file to store generated keyphrase candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k.out
@@ -124,6 +124,10 @@ We choose the final model using the following rules:
    - The trained model with the minimum generation ppl is chosen.
    - If there are multiple models with minimum generation ppl, choose the one with highest generation accuracy.
    - If there are multiple models with minimum generation ppl and highest generation accuracy, choose the one with the smallest training step.
+
+The evaluation process is added into `KG-KE-KR/translate.py`. Thus, there are two stages when we run `KG-KE-KR/translate.py`:
+   - **Inference stage**: the trained KG-KE-KR model is loaded to produce generated keyphrase candidates for the testing datasets. The generated candidates are stored in the `-output` file. The corresponding generation scores are stored in the `-scores_output` file. The predicted importance scores of source context tokens are stored in the `-sel_probs_output` file.
+   - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 ## Merging
 1. Download our trained reranker (scorer) [here](https://www.dropbox.com/s/8j17mrll5f77qaz/seed3435_reranker.zip?dl=1). Build `Merge/saved_models` folder and unzip the trained reranker in this folder.
 2. Merge and rerank three kinds of keyphrase candidates:
@@ -131,7 +135,7 @@ We choose the final model using the following rules:
    cd Merge/sh/merge_rerank/
    sh merge_rerank_full.sh
 ```
-Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, a part of the options are the following (check `Merge/onmt/opts.py` for more details):
+Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, Part of the options are the following (check `Merge/onmt/opts.py` for more details):
 
 # Citation
 You can cite our paper by:
