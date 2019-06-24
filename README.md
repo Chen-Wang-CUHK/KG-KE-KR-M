@@ -52,7 +52,35 @@ Note: If you use a slurm-managed server, use `sbatch preprocess_full.sh`. The `p
 cd KG-KE-KR/sh/train/
 sh train_full.sh
 ```
+The model checkpoints are saved in `KG-KE-KR/saved_models/end2end/seed3435_full_kg_ke_kr/` folder.
+
 Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_full.sh` is to run `KG-KE-KR/train.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+```
+-save_model []: path prefix for saving model checkpoints
+-data []: path prefix for the onmt-processed data
+-vocab []: path prefix for the onmt-processed vocabulary
+-share_embeddings: the flag to share embeddings between the encoder and the decoder
+-key_model [key_selector|key_generator|key_end2end]: the chosen model to train. 'key_selector': Encoder1 + Extractor; 'key_generator': Encoder1 + Encoder2 (if -use_retrieved_keys) + Decoder; 'key_end2end': Encoder1 + Encoder2 (if -use_retrieved_keys) + Extractor + Decoder
+-use_retrieved_keys: a flag to use the retrieved keyphrases
+-only_rescale_copy: a flag to only rescale copy probabilities using the predicted importance scores from the selector (extractor)
+-e2e_type [separate_enc_sel|share_enc_sel]: 'separate_enc_sel': use different encoding layer between the Encoder1 and the selector; 'share_enc_sel': share the encoding layer between the Encoder1 and the selector.
+-sel_train_ratio []: the probability of training the selector using current batch
+-sel_classifier [simple_fc|complex_Nallapati]: the chosen classifier for the selector.
+-word_vec_size []: word embedding size, e.g., 100
+-encoder_type [rnn|brnn]: 'rnn': unidirectional RNN layers; 'brnn': bidirectional RNN layers 
+-enc_layers []: encoder layers, e.g., 1
+-dec_layers []: decoder layers, e.g., 1
+-rnn_size []: For an unidirectional RNN layer, it is the hidden size of the RNN cell. For a bidirectional RNN layer, rnn_size/2 is the hidden size of an RNN cell
+-rnn_type [LSTM|GRU|SRU]: RNN cell type, e.g. GRU
+-seed []: random seed, e.g. 3435
+-pos_weight []: the positive weight for the weighted BCE loss when training the selector, e.g., 9.0
+-sel_lambda []: the weight for the extraction loss, e.g. 1.0
+-sel_normalize_by_length : a flag to normalize the extration loss with the source text length
+-gen_lambda []: the weight for the generation loss, e.g. 1.0
+-incons_lambda []: the werith for the inconsistency loss, e.g. 0.0 (means we do not consider the incosistency loss)
+-optim [sgd|adagrad|adadelta|adam|sparseadam]: the chosen optimizer, e.g. adam
+-max_grad_norm []: If the norm of the gradient vector exceeds this, renormalize it to have the norm equal to max_grad_norm
+```
 ## KG-KE-KR inference
 ```
 cd KG-KE-KR/sh/translate/
