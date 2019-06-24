@@ -136,7 +136,28 @@ The evaluation process is added into `KG-KE-KR/translate.py`. Thus, there are tw
    sh merge_rerank_full.sh
 ```
 Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, Part of the options are the following (check `Merge/onmt/opts.py` for more details):
-
+```
+-model []: the trained reranker (scorer) model, e.g., saved_models/seed3435_reranker.pt
+-src []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt. Here, the source context is used to produce extracted keyphrase candidates.
+-tgt []: a file storing generated candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k.out
+-gen_scores []: a file storing the generation scores of generated candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_gen_scores.out
+-retrieved_keys []: a file storing retrieved keyphrase candidates of testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context_nstpws_sims_retrieved_keyphrases_filtered.txt
+-retrieved_scores []: a file storing the retrieval scores of retrieved keyphrase candidates, e.g., specified_TextData_path/word_kp20k_testing_context_nstpws_sims_retrieved_scores_filtered.txt
+-sel_probs []: a file storing predicted src token importance scores from the selector (extractor), e.g.,  specified_log_path/seed3435_full_kg_ke_kr_kp20k_sel_probs.out
+-merge_ex_keys: a flag to merge extracted candidates
+-merge_rk_keys: a flag to merge retrieved candidates
+-merge_with_stemmer: a flag to stem the tokens when merging
+-reranked_scores_output []: an output file to store the final scores of final keyphrase predictions, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_merge_all_merged_reranked_scores.out
+-output []: an output file to store the merged and reranked final keyphrase predictions, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_merge_all_merged_reranked.out
+-sel_keys_output []: an output file to store the extracted keyphrase candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_sel_keys.out
+-kpg_context []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt. This is also used to evaluate the predictions stored in '-output' file.
+-kpg_tgt []: a file storing the gold keyphrases, e.g., specified_TextData_path/word_kp20k_testing_keyword.txt. This is used to evaluate the predictions stored in '-output' file.
+-match_method [word_match|str_match]: matching method when spliting present and absent keyphrases. 'word_match': word-level matching; 'str_match': string-level matching.
+-filter_dot_comma_unk [True]: Always True. If true, filter the keyphrases with dot, comma, or unk token before evaluation. Note that the filter_dot_comma_unk is always true even if you set '-filter_dot_comma_unk=False'. 
+```
+There are also two stages when we run `Merge/merge_rerank.py`:
+   - **Merging stage**: At first, the extracted keyphrase candidates are produced based on the predicted importance score of each source text token. Then, the extracted, retrieved, and generated candidates are merged and reranked according to our merging method to produce final keyphrase predictions.
+   - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the final merged and reranked predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 # Citation
 You can cite our paper by:
 ```
