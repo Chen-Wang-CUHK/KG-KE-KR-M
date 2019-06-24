@@ -35,10 +35,39 @@ Finally, we obtain `509,818` valid data samples.
    - The `Testing\*_context_nstpws_sims_retrieved_scores_filtered.txt` files store the retrival score of each retrieved keyphrase, which is the corresponding Jaccard similarity score between the retrieved paper and the original paper.
    - The `Testing\*_testing_keyword.txt` files store the keyphrases of each testing paper. Each line contains all the keyphrases of a testing paper, which are split by a `;` token.
 
-2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` foler and unzip the downloaded `*.zip` file into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data, i.e. `sh preprocess_full.sh`. If you use a slurm-managed server, use `sbatch preprocess_full.sh`.
+2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` foler and unzip the downloaded `*.zip` file into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data (Note: You **MUST** replace `/research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python` with your own python interpreter in all the `.sh` files to run them smoothly.): 
+```
+      cd KG-KE-KR/sh/preprocess/
+      sh preprocess_full.sh
+```
+After running the onmt preprocessing, the following onmt-preprocessed data will be generated in `KG-KE-KR/data/onmt_processed_data/full_dataset/` folder:
+- `full_dataset.train.*.pt`: serialized PyTorch files containing training data. `*` represents a number starting from 1.
+- `full_dataset.valid.*.pt`: serialized PyTorch files containing validation data. `*` represents a number starting from 1.
+- `full_dataset.vocab.pt`: serialized PyTorch file containing vocabulary data.
 
+Note: If you use a slurm-managed server, use `sbatch preprocess_full.sh`. The `preprocess_full.sh` is to run `KG-KE-KR/preprocess.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
 # Run our model
-The source code will be available soon.
+## KG-KE-KR traning
+```
+cd KG-KE-KR/sh/train/
+sh train_full.sh
+```
+Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_full.sh` is to run `KG-KE-KR/train.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+## KG-KE-KR inference
+```
+cd KG-KE-KR/sh/translate/
+sh translate_full.sh
+```
+Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `translate_full.sh` is to run `KG-KE-KR/translate.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+## Merging
+1. Download our trained reranker (scorer) [here](https://www.dropbox.com/s/8j17mrll5f77qaz/seed3435_reranker.zip?dl=1). Build `Merge/saved_models` folder and unzip the trained reranker in this folder.
+2. Merge and rerank three kinds of keyphrase candidates:
+```
+   cd Merge/sh/merge_rerank/
+   sh merge_rerank_full.sh
+```
+Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, a part of the options are the following (check `Merge/onmt/opts.py` for more details):
+
 # Citation
 You can cite our paper by:
 ```
