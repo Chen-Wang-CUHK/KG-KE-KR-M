@@ -34,6 +34,9 @@ Finally, we obtain `509,818` valid data samples.
    - The `*_context_nstpws_sims_retrieved_keyphrases_filtered.txt` files store the concatenated retrieved keyphrases of the top 3 similar papers. The retrieved keyphrases are split by a `<eos>` token. We utilize Jaccard similarity score between the non-stop-word sets of the two papers as the similarity score. For all the training, validation, and testing datasets, we use the filtered **KP20k** training dataset as the retrieval corpus.
    - The `Testing\*_context_nstpws_sims_retrieved_scores_filtered.txt` files store the retrival score of each retrieved keyphrase, which is the corresponding Jaccard similarity score between the retrieved paper and the original paper.
    - The `Testing\*_testing_keyword.txt` files store the keyphrases of each testing paper. Each line contains all the keyphrases of a testing paper, which are split by a `;` token.
+
+2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` foler and unzip the downloaded `*.zip` into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data, i.e. `sh preprocess_full.sh`. If you use a slurm-managed server, use `sbatch preprocess_full.sh`.
+
 # Run our model
 The source code will be available soon.
 # Citation
