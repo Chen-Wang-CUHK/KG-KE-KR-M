@@ -1,5 +1,12 @@
 # KG-KE-KR-M
 The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
+# Dependencies
+- python 3.6.6
+- pytorch 0.4.1 (CUDA9.0)
+- torchtext 0.3.1
+
+The full dependencies are listed in `requirements.txt`.
+
 # Get the filtered raw KP20k training dataset
 You can download the filtered raw **KP20k** training dataset [here](https://www.dropbox.com/s/kozr13nmw6cvb2q/kp20k_training_filtered.zip?dl=1). The statistics of the file are shown in the following table. Each empty (filtered) sample is stored as {"title": "", "keyword": "", "abstract": ""}.
 
