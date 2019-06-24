@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=train_full
-#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/logs/train/train_full_log.txt
+#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/train/train_full_log.txt
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu_24h
 #SBATCH -w gpu26
@@ -15,7 +15,7 @@ GPUID=0
 # 343, 3435, 34350 are the seeds to run the experiments in the paper
 SEED=3435
 MODEL_TYPE="end2end"
-MODEL_NAME="seed${SEED}_full_kg_ke_kr_m"
+MODEL_NAME="seed${SEED}_full_kg_ke_kr"
 
 cd ..
 cd ..

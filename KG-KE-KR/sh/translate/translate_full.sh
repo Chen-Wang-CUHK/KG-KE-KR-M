@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=translate_full
-#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/logs/translate/seed3435_full_kg_ke_kr_m_debug/translate_full_log.txt
+#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/translate/seed3435_full_kg_ke_kr_m_debug/translate_full_log.txt
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu_24h
 #SBATCH -w gpu26
@@ -15,7 +15,7 @@ GPUID=0
 cd ..
 cd ..
 
-MODEL="seed3435_full_kg_ke_kr_m_debug"
+MODEL="seed3435_full_kg_ke_kr"
 MODEL_DIR="saved_models/end2end/${MODEL}/"
 
 # the model file is "seed3435_full_kg_ke_kr_m_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000.pt"
@@ -35,9 +35,9 @@ for DATASET in "inspec" "krapivin" "nus" "semeval"
 do
   /research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python translate.py \
   -model="${MODEL_DIR}${saved_model}.pt" \
-  -output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}.out" \
-  -scores_output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_gen_scores.out" \
-  -sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_sel_probs.out" \
+  -output="${LOG_DIR}${MODEL}_${DATASET}.out" \
+  -scores_output="${LOG_DIR}${MODEL}_${DATASET}_gen_scores.out" \
+  -sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_sel_probs.out" \
   -src=${Testing_DIR}/word_${DATASET}_testing_context.txt \
   -retrieved_keys=${Testing_DIR}/word_${DATASET}_testing_context_nstpws_sims_retrieved_keyphrases_filtered.txt \
   -key_indicators=${Testing_DIR}/word_${DATASET}_testing_key_indicators.txt \
@@ -48,15 +48,15 @@ do
   -n_best=${beam_size} \
   -batch_size=${bs} \
   -gpu=${GPUID} \
-  -single_word_maxnum=1 > "${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_log.txt"
+  -single_word_maxnum=1 > "${LOG_DIR}${MODEL}_${DATASET}_log.txt"
 done
 
 DATASET="kp20k"
 /research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python translate.py \
 -model="${MODEL_DIR}${saved_model}.pt" \
--output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}.out" \
--scores_output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_gen_scores.out" \
--sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_sel_probs.out" \
+-output="${LOG_DIR}${MODEL}_${DATASET}.out" \
+-scores_output="${LOG_DIR}${MODEL}_${DATASET}_gen_scores.out" \
+-sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_sel_probs.out" \
 -src=${Testing_DIR}/word_${DATASET}_testing_context.txt \
 -retrieved_keys=${Testing_DIR}/word_${DATASET}_testing_context_nstpws_sims_retrieved_keyphrases_filtered.txt \
 -key_indicators=${Testing_DIR}/word_${DATASET}_testing_key_indicators.txt \
@@ -67,4 +67,4 @@ DATASET="kp20k"
 -n_best=${beam_size} \
 -batch_size=${bs} \
 -gpu=${GPUID} \
--single_word_maxnum=-1 > "${LOG_DIR}${MODEL}_${DATASET}_bs${bs}_log.txt"
+-single_word_maxnum=-1 > "${LOG_DIR}${MODEL}_${DATASET}_log.txt"
