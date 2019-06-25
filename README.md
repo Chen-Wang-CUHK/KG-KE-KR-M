@@ -1,6 +1,8 @@
 # KG-KE-KR-M
 The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
 
+<p align="center"><img width="50%" src="figs/KE-KG-KR-M.PNG" /></p>
+
 Table of contents
 =================
    * [Dependencies](#dependencies)
@@ -42,8 +44,8 @@ Finally, we obtain `509,818` valid data samples.
    - The `*_context_filtered.txt` files and `*_context.txt` files store the context of each paper (i.e. the title + ". \<eos\>" + the abstract).
    - The `Training/word_kp20k_training_keyword_filtered.txt` and `Validation/word_kp20k_validation_keyword_filtered.txt` store the keyphrases of the training and validation datasets respectively. Each line is a keyphrase.
    - The `*_key_indicators_filtered.txt` files store the keyword indicators for each context token. `I` (`O`) means the corresponding context token is (not) a keyword. A context token is regarded as a keyword if (1) it is a non-stop-word and (2) it is one token of one of the gold keyphrases of this paper. 
-   - The `*_context_nstpws_sims_retrieved_keyphrases_filtered.txt` files store the concatenated retrieved keyphrases of the top 3 similar papers. The retrieved keyphrases are split by a `<eos>` token. We utilize Jaccard similarity score between the non-stop-word sets of the two papers as the similarity score. For all the training, validation, and testing datasets, we use the filtered **KP20k** training dataset as the retrieval corpus.
-   - The `Testing\*_context_nstpws_sims_retrieved_scores_filtered.txt` files store the retrival score of each retrieved keyphrase, which is the corresponding Jaccard similarity score between the retrieved paper and the original paper.
+   - The `*_context_nstpws_sims_retrieved_keyphrases_filtered.txt` files store the concatenated retrieved keyphrases of the top 3 similar papers. The retrieved keyphrases are split by a `<eos>` token. We utilize **Jaccard similarity** score between the non-stop-word sets of the two papers as the similarity score. For all the training, validation, and testing datasets, we use the filtered **KP20k** training dataset as the retrieval corpus.
+   - The `Testing\*_context_nstpws_sims_retrieved_scores_filtered.txt` files store the **retrieval score** of each retrieved keyphrase, which is the corresponding Jaccard similarity score between the retrieved paper and the original paper.
    - The `Testing\*_testing_keyword.txt` files store the keyphrases of each testing paper. Each line contains all the keyphrases of a testing paper, which are split by a `;` token.
 
 2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` foler and unzip the downloaded `*.zip` file into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data (Note: You **MUST** replace `/research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python` with your own python interpreter in all the `.sh` files to run them smoothly.): 
@@ -76,6 +78,11 @@ Note: If you use a slurm-managed server, use `sbatch preprocess_full.sh`. The `p
 ```
 # Run our model
 ## KG-KE-KR training
+The framework of our end-to-end KG-KE-KR model is as the following:
+
+<p align="center"><img width="40%" src="figs/KE-KG-KR.PNG" /></p>
+
+You can run the following command lines to train a KG-KE-KR model:
 ```
 cd KG-KE-KR/sh/train/
 sh train_full.sh
@@ -168,6 +175,9 @@ Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The 
 ```
 There are also two stages when we run `Merge/merge_rerank.py`:
    - **Merging stage**: At first, the extracted keyphrase candidates are produced based on the predicted importance score of each source text token. Then, the extracted, retrieved, and generated candidates are merged and reranked according to our merging method to produce final keyphrase predictions.
+   
+   <p align="center"><img width="40%" src="figs/Merge.PNG" /></p>
+   
    - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the final merged and reranked predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 # Citation
 You can cite our paper by:
