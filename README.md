@@ -3,8 +3,7 @@ The processed datasets and source code for the NAACL19 paper "[An Integrated App
 
 <p align="center"><img width="50%" src="figs/KE-KG-KR-M.PNG" /></p>
 
-Table of contents
-=================
+# Table of contents
    * [Dependencies](#dependencies)
    * [Get the filtered raw KP20k training dataset](#get-the-filtered-raw-kp20k-training-dataset)
    * [Data preprocess](#data-preprocess)
@@ -23,6 +22,7 @@ The full dependencies are listed in `requirements.txt`.
 
 # Get the filtered raw KP20k training dataset
 You can download the filtered raw **KP20k** training dataset [here](https://www.dropbox.com/s/kozr13nmw6cvb2q/kp20k_training_filtered.zip?dl=1). The statistics of the file are shown in the following table. Each empty (filtered) sample is stored as {"title": "", "keyword": "", "abstract": ""}.
+
 Part | Number
 --- | ---
 Total | 530,802
@@ -48,7 +48,7 @@ Finally, we obtain `509,818` valid data samples.
    - The `Testing\*_context_nstpws_sims_retrieved_scores_filtered.txt` files store the **retrieval score** of each retrieved keyphrase, which is the corresponding Jaccard similarity score between the retrieved paper and the original paper.
    - The `Testing\*_testing_keyword.txt` files store the keyphrases of each testing paper. Each line contains all the keyphrases of a testing paper, which are split by a `;` token.
 
-2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` foler and unzip the downloaded `*.zip` file into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data (Note: You **MUST** replace `/research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python` with your own python interpreter in all the `.sh` files to run them smoothly.): 
+2. After downloading the processed text data, build a `KG-KE-KR/data/text_data/` folder and unzip the downloaded `*.zip` file into this folder. Then,  navigate to `KG-KE-KR/sh/preprocess/` folder and run the `preprocess_full.sh` file to prepare the onmt-preprocessed data (Note: You **MUST** replace `/research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python` with your own python interpreter in all the `.sh` files to run them smoothly.): 
 ```
       cd KG-KE-KR/sh/preprocess/
       sh preprocess_full.sh
