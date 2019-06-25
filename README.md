@@ -3,14 +3,14 @@ The processed datasets and source code for the NAACL19 paper "[An Integrated App
 
 Table of contents
 =================
-   * [Dependencies](dependencies)
-   * [Get the filtered raw KP20k training dataset](get-the-filtered-raw-kp20k-training-dataset)
-   * [Data preprocess](data-preprocess)
-   * [Run our model](run-our-model)
-      - [KG-KE-KR training](kg-ke-kr-training)
-      - [KG-KE-KR inference](kg-ke-kr-inference)
-      - [Merging](merging)
-   * [Citation](citation)
+   * [Dependencies](#dependencies)
+   * [Get the filtered raw KP20k training dataset](#get-the-filtered-raw-kp20k-training-dataset)
+   * [Data preprocess](#data-preprocess)
+   * [Run our model](#run-our-model)
+      - [KG-KE-KR training](#kg-ke-kr-training)
+      - [KG-KE-KR inference](#kg-ke-kr-inference)
+      - [Merging](#merging)
+   * [Citation](#citation)
 # Dependencies
 - python 3.6.6
 - pytorch 0.4.1 (CUDA9.0)
