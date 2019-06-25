@@ -1,5 +1,5 @@
 # KG-KE-KR-M
-The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
+The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is mainly based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py). Some codes are adapted from [seq2seq-keyphrase](https://github.com/memray/seq2seq-keyphrase). 
 
 <p align="center"><img width="50%" src="figs/KE-KG-KR-M.PNG" /></p>
 
@@ -22,7 +22,6 @@ The full dependencies are listed in `requirements.txt`.
 
 # Get the filtered raw KP20k training dataset
 You can download the filtered raw **KP20k** training dataset [here](https://www.dropbox.com/s/kozr13nmw6cvb2q/kp20k_training_filtered.zip?dl=1). The statistics of the file are shown in the following table. Each empty (filtered) sample is stored as {"title": "", "keyword": "", "abstract": ""}.
-
 Part | Number
 --- | ---
 Total | 530,802
@@ -179,6 +178,8 @@ There are also two stages when we run `Merge/merge_rerank.py`:
    <p align="center"><img width="40%" src="figs/Merge.PNG" /></p>
    
    - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the final merged and reranked predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
+# Our Final Predictions
+You can download our raw final predictions of our KG-KE-KR-M method for the five testing datasets [here](https://www.dropbox.com/s/rxrxnqz768047el/KG-KE-KR-M%20Final%20Predictions.zip?dl=1). The prediction postprecessing is integrated in `evaluation_utils.py` including removing duplicated predictions, restricting the maximum number of single-word predictions (if set), and filtering predictions which contain dot, comma, or unk token.
 # Citation
 You can cite our paper by:
 ```
