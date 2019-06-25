@@ -12,6 +12,7 @@ Table of contents
       - [KG-KE-KR training](#kg-ke-kr-training)
       - [KG-KE-KR inference](#kg-ke-kr-inference)
       - [Merging](#merging)
+   * [Our Final Predictions](#our-final-predictions)
    * [Citation](#citation)
 # Dependencies
 - python 3.6.6
