@@ -1,5 +1,16 @@
 # KG-KE-KR-M
 The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
+
+Table of contents
+=================
+   * [Dependencies](dependencies)
+   * [Get the filtered raw KP20k training dataset](get-the-filtered-raw-kp20k-training-dataset)
+   * [Data preprocess](data-preprocess)
+   * [Run our model](run-our-model)
+      - [KG-KE-KR training](kg-ke-kr-training)
+      - [KG-KE-KR inference](kg-ke-kr-inference)
+      - [Merging](merging)
+   * [Citation](citation)
 # Dependencies
 - python 3.6.6
 - pytorch 0.4.1 (CUDA9.0)
@@ -45,16 +56,33 @@ After running the onmt preprocessing, the following onmt-preprocessed data will 
 - `full_dataset.valid.*.pt`: serialized PyTorch files containing validation data. `*` represents a number starting from 1.
 - `full_dataset.vocab.pt`: serialized PyTorch file containing vocabulary data.
 
-Note: If you use a slurm-managed server, use `sbatch preprocess_full.sh`. The `preprocess_full.sh` is to run `KG-KE-KR/preprocess.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+Note: If you use a slurm-managed server, use `sbatch preprocess_full.sh`. The `preprocess_full.sh` is to run `KG-KE-KR/preprocess.py`.  Part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+```
+-train_src []: the file containing training source contexts, e.g., specified_TextData_path/word_kp20k_training_context_filtered.txt
+-train_tgt []: the file containing training target keyphrases, e.g., specified_TextData_path/word_kp20k_training_keyword_filtered.txt
+-train_key_indicators []: the file containing keyword indicators for each training source context, e.g., specified_path/word_kp20k_training_key_indicators_filtered.txt
+-train_retrieved_keys []: the file containing retrieved keyphrases for each training source context, e.g., specified_TextData_path/word_kp20k_training_context_nstpws_sims_retrieved_keyphrases_filtered.txt
+-valid_src []: the file containing validation source contexts, e.g., specified_TextData_path/word_kp20k_validation_context_filtered.txt
+-valid_tgt []: the file containing validation target keyphrases, e.g., specified_TextData_path/word_kp20k_validation_keyword_filtered.txt
+-valid_key_indicators []: the file containing keyword indicators for each validation source context, e.g., specified_TextData_path/word_kp20k_validation_key_indicators_filtered.txt
+-valid_retrieved_keys []: the file containing retrieved keyphrases for each validation source context, e.g., specified_TextData_path/word_kp20k_validation_context_nstpws_sims_retrieved_keyphrases_filtered.txt
+-save_data []: the path prefix to save the onmt-processed data, e.g., data/onmt_processed_data/full_dataset/full_dataset
+-max_shard_size []: For text corpus of large volume, it will be divided into shards of this size to preprocess. If 0, the data will be handled as a whole. The unit is in bytes, e.g., 65536000.
+-src_vocab_size []: size of the source vocabulary, e.g., 50000
+-src_seq_length []: Maximum source sequence length, e.g., 400. The data examples with larger lengths than src_seq_length will be filtered. 
+-tgt_seq_length []: Maximum target keyphrase sequence length, e.g. 6. The data examples with larger tgt lengths will be filtered
+-dynamic_dict: a flag to build a dynamic dictionary for each data example. It MUST be set if you want to use copy mechanism in your model.
+-share_vocab: a flag to share the vocabulary between source context and target keyphrase
+```
 # Run our model
-## KG-KE-KR traning
+## KG-KE-KR training
 ```
 cd KG-KE-KR/sh/train/
 sh train_full.sh
 ```
 The model checkpoints are saved in `KG-KE-KR/saved_models/end2end/seed3435_full_kg_ke_kr/` folder.
 
-Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_full.sh` is to run `KG-KE-KR/train.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_full.sh` is to run `KG-KE-KR/train.py`. Part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
 ```
 -save_model []: path prefix for saving model checkpoints
 -data []: path prefix for the onmt-processed data
@@ -86,7 +114,31 @@ Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_
 cd KG-KE-KR/sh/translate/
 sh translate_full.sh
 ```
-Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `translate_full.sh` is to run `KG-KE-KR/translate.py`, a part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `translate_full.sh` is to run `KG-KE-KR/translate.py`, Part of the options are the following (check `KG-KE-KR/onmt/opts.py` for more details):
+```
+-model []: a '.pt' file storing the finally chosen model
+-output []: an output file to store generated keyphrase candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k.out
+-scores_output []: an output file to store generation scores (beam search scores) of generated candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_gen_scores.out
+-sel_probs_output []: an output file to store predicted src token importance scores from the selector (extractor), e.g.,  specified_log_path/seed3435_full_kg_ke_kr_kp20k_sel_probs.out
+-src []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt
+-retrieved_keys []: a file storing retrieved keyphrases of testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context_nstpws_sims_retrieved_keyphrases_filtered.txt
+-key_indicators []: a file storing keyword indicators of testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_key_indicators.txt
+-beam_size []: beam size, e.g., 200
+-n_best []: output the top n_best predictions
+-max_length []: maximum prediction length, e.g., 6
+-batch_size []: batch size
+-kpg_tgt []: a file storing the gold keyphrases, e.g., specified_TextData_path/word_kp20k_testing_keyword.txt. This is used to evaluate the predictions stored in '-output' file.
+-kpg_context []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt. This is also used to evaluate the predictions stored in '-output' file.
+-single_word_maxnum []: The maximum number of single-word predictions. Used when evaluating keyphrase predictions. 1 is used for Inspec, Krapivin, NUS, and SemEval datasets. -1 is used for KP20k dataset, which means we do not restrict the maximum number of single-word predictions 
+```
+We choose the final model using the following rules:
+   - The trained model with the minimum generation ppl is chosen.
+   - If there are multiple models with minimum generation ppl, choose the one with highest generation accuracy.
+   - If there are multiple models with minimum generation ppl and highest generation accuracy, choose the one with the smallest training step.
+
+The evaluation process is added into `KG-KE-KR/translate.py`. Thus, there are two stages when we run `KG-KE-KR/translate.py`:
+   - **Inference stage**: the trained KG-KE-KR model is loaded to produce generated keyphrase candidates for the testing datasets. The generated candidates are stored in the `-output` file. The corresponding generation scores are stored in the `-scores_output` file. The predicted importance scores of source context tokens are stored in the `-sel_probs_output` file.
+   - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 ## Merging
 1. Download our trained reranker (scorer) [here](https://www.dropbox.com/s/8j17mrll5f77qaz/seed3435_reranker.zip?dl=1). Build `Merge/saved_models` folder and unzip the trained reranker in this folder.
 2. Merge and rerank three kinds of keyphrase candidates:
@@ -94,8 +146,29 @@ Note: If you use a slurm-managed server, use `sbatch translate_full.sh`. The `tr
    cd Merge/sh/merge_rerank/
    sh merge_rerank_full.sh
 ```
-Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, a part of the options are the following (check `Merge/onmt/opts.py` for more details):
-
+Note: If you use a slurm-managed server, use `sbatch merge_rerank_full.sh`. The `merge_rerank_full.sh` is to run `Merge/merge_rerank.py`, Part of the options are the following (check `Merge/onmt/opts.py` for more details):
+```
+-model []: the trained reranker (scorer) model, e.g., saved_models/seed3435_reranker.pt
+-src []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt. Here, the source context is used to produce extracted keyphrase candidates.
+-tgt []: a file storing generated candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k.out
+-gen_scores []: a file storing the generation scores of generated candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_gen_scores.out
+-retrieved_keys []: a file storing retrieved keyphrase candidates of testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context_nstpws_sims_retrieved_keyphrases_filtered.txt
+-retrieved_scores []: a file storing the retrieval scores of retrieved keyphrase candidates, e.g., specified_TextData_path/word_kp20k_testing_context_nstpws_sims_retrieved_scores_filtered.txt
+-sel_probs []: a file storing predicted src token importance scores from the selector (extractor), e.g.,  specified_log_path/seed3435_full_kg_ke_kr_kp20k_sel_probs.out
+-merge_ex_keys: a flag to merge extracted candidates
+-merge_rk_keys: a flag to merge retrieved candidates
+-merge_with_stemmer: a flag to stem the tokens when merging
+-reranked_scores_output []: an output file to store the final scores of final keyphrase predictions, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_merge_all_merged_reranked_scores.out
+-output []: an output file to store the merged and reranked final keyphrase predictions, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_merge_all_merged_reranked.out
+-sel_keys_output []: an output file to store the extracted keyphrase candidates, e.g., specified_log_path/seed3435_full_kg_ke_kr_kp20k_sel_keys.out
+-kpg_context []: a file storing testing source contexts, e.g., specified_TextData_path/word_kp20k_testing_context.txt. This is also used to evaluate the predictions stored in '-output' file.
+-kpg_tgt []: a file storing the gold keyphrases, e.g., specified_TextData_path/word_kp20k_testing_keyword.txt. This is used to evaluate the predictions stored in '-output' file.
+-match_method [word_match|str_match]: matching method when spliting present and absent keyphrases. 'word_match': word-level matching; 'str_match': string-level matching.
+-filter_dot_comma_unk [True]: Always True. If true, filter the keyphrases with dot, comma, or unk token before evaluation. Note that the filter_dot_comma_unk is always true even if you set '-filter_dot_comma_unk=False'. 
+```
+There are also two stages when we run `Merge/merge_rerank.py`:
+   - **Merging stage**: At first, the extracted keyphrase candidates are produced based on the predicted importance score of each source text token. Then, the extracted, retrieved, and generated candidates are merged and reranked according to our merging method to produce final keyphrase predictions.
+   - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the final merged and reranked predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 # Citation
 You can cite our paper by:
 ```
