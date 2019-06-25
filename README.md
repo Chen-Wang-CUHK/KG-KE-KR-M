@@ -1,5 +1,16 @@
 # KG-KE-KR-M
 The processed datasets and source code for the NAACL19 paper "[An Integrated Approach for Keyphrase Generation via Exploring the Power of Retrieval and Extraction](https://arxiv.org/pdf/1904.03454.pdf)". The code is based on [OpenNMT-py](https://github.com/OpenNMT/OpenNMT-py).
+
+Table of contents
+=================
+   * [Dependencies](dependencies)
+   * [Get the filtered raw KP20k training dataset](get-the-filtered-raw-kp20k-training-dataset)
+   * [Data preprocess](data-preprocess)
+   * [Run our model](run-our-model)
+      - [KG-KE-KR training](kg-ke-kr-training)
+      - [KG-KE-KR inference](kg-ke-kr-inference)
+      - [Merging](merging)
+   * [Citation](citation)
 # Dependencies
 - python 3.6.6
 - pytorch 0.4.1 (CUDA9.0)
