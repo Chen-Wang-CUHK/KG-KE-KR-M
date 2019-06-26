@@ -19,7 +19,7 @@ MODEL="seed3435_full_kg_ke_kr"
 MODEL_DIR="saved_models/end2end/${MODEL}/"
 
 # Change the model file to your chosen model
-saved_model="seed3435_full_kg_ke_kr_m_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000.pt"
+saved_model="seed3435_full_kg_ke_kr_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000.pt"
 
 LOG_DIR="logs/translate/${MODEL}/"
 mkdir -p ${LOG_DIR}
