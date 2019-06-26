@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=translate_full
-#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/translate/seed3435_full_kg_ke_kr_m_debug/translate_full_log.txt
+#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/translate/seed3435_full_kg_ke_kr_m/translate_full_log.txt
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu_24h
 #SBATCH -w gpu26
@@ -18,9 +18,8 @@ cd ..
 MODEL="seed3435_full_kg_ke_kr"
 MODEL_DIR="saved_models/end2end/${MODEL}/"
 
-# the model file is "seed3435_full_kg_ke_kr_m_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000.pt"
-# we remove ".pt" here to provide convenience for naming other log files
-saved_model="seed3435_full_kg_ke_kr_m_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000"
+# Change the model file to your chosen model
+saved_model="seed3435_full_kg_ke_kr_m_genPPL_9.704_aveMLoss_7.517_aveSelLoss_0.5045_aveIncLoss_0.000_selF1_0.588_genAcc_55.29_step_108000.pt"
 
 LOG_DIR="logs/translate/${MODEL}/"
 mkdir -p ${LOG_DIR}
@@ -34,7 +33,7 @@ Testing_DIR="data/text_data/Processed_data_for_onmt/Testing"
 for DATASET in "inspec" "krapivin" "nus" "semeval"
 do
   /research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python translate.py \
-  -model="${MODEL_DIR}${saved_model}.pt" \
+  -model="${MODEL_DIR}${saved_model}" \
   -output="${LOG_DIR}${MODEL}_${DATASET}.out" \
   -scores_output="${LOG_DIR}${MODEL}_${DATASET}_gen_scores.out" \
   -sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_sel_probs.out" \
@@ -53,7 +52,7 @@ done
 
 DATASET="kp20k"
 /research/king3/wchen/Anaconda3/envs/py3.6_th0.4.1_cuda9.0/bin/python translate.py \
--model="${MODEL_DIR}${saved_model}.pt" \
+-model="${MODEL_DIR}${saved_model}" \
 -output="${LOG_DIR}${MODEL}_${DATASET}.out" \
 -scores_output="${LOG_DIR}${MODEL}_${DATASET}_gen_scores.out" \
 -sel_probs_output="${LOG_DIR}${MODEL}_${DATASET}_sel_probs.out" \
