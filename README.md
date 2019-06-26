@@ -181,7 +181,7 @@ There are also two stages when we run `Merge/merge_rerank.py`:
    
    - **Evaluation stage**: the MAP, Micro-averaged F1 scores, and Macro-averaged F1 scores are computed by comparing the final merged and reranked predictions (i.e. `-output`) and ground-truth keyphrases (i.e. `-kpg_tgt`). The `-kpg_context` is used to split present and absent keyphrases.
 # Our Final Predictions
-You can download our raw final predictions of our KG-KE-KR-M method for the five testing datasets [here](https://www.dropbox.com/s/rxrxnqz768047el/KG-KE-KR-M%20Final%20Predictions.zip?dl=1). The prediction postprecessing is integrated in `evaluation_utils.py` including removing duplicated predictions, restricting the maximum number of single-word predictions (if set), and filtering predictions which contain dot, comma, or unk token.
+You can download our raw final predictions of our KG-KE-KR-M method for the five testing datasets [here](https://www.dropbox.com/s/rxrxnqz768047el/KG-KE-KR-M%20Final%20Predictions.zip?dl=1). The prediction post-processing is integrated in `evaluation_utils.py` including removing duplicated predictions, restricting the maximum number of single-word predictions (if set), and filtering predictions which contain dot, comma, or unk token.
 # Citation
 You can cite our paper by:
 ```
