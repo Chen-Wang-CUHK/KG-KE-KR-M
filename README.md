@@ -117,6 +117,7 @@ Note: If you use a slurm-managed server, use `sbatch train_full.sh`. The `train_
 -max_grad_norm []: If the norm of the gradient vector exceeds this, renormalize it to have the norm equal to max_grad_norm
 ```
 ## KG-KE-KR inference
+After the training is finished, open `KG-KE-KR/sh/translate/translate_full.sh` and change the value of `saved_model` to the name of the chosen model's `.pt` file. Then run the following command lines:
 ```
 cd KG-KE-KR/sh/translate/
 sh translate_full.sh
