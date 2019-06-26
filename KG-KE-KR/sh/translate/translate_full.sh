@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=translate_full
-#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/translate/seed3435_full_kg_ke_kr_m/translate_full_log.txt
+#SBATCH --output=/research/king3/wchen/Code4Git/KG-KE-KR-M/KG-KE-KR/logs/translate/seed3435_full_kg_ke_kr/translate_full_log.txt
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu_24h
 #SBATCH -w gpu26
